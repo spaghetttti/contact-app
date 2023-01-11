@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import ContactsList from "./components/contacts-list.component";
+import ControlPanel from "./components/control-panel.component";
+import { Contact } from "./components/model";
 
-function App() {
+const App: React.FC = () => {
+  const [name, setName] = useState<string>("");
+  const [phoneNumber, setPhoneNumber] = useState<number | string>('')
+  const [contacts, setContacts] = useState<Array<Contact>>([]);
+
+  const handleAddition = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (name) {
+      setContacts([...contacts, { id: Date.now(), name, phoneNumber }]);
+      setName("");
+      setPhoneNumber('')
+    }
+  };
+  console.log(contacts);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <span className="header">Contacts</span> 
+      <ControlPanel
+        name={name}
+        setName={setName}
+        phoneNumber={phoneNumber}
+        setPhoneNumber={setPhoneNumber}
+        handleAddition={handleAddition}
+      />
+      <ContactsList contacts={contacts} setContacts={setContacts}/>
+      
     </div>
   );
-}
+};
 
 export default App;
