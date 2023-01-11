@@ -1,5 +1,4 @@
 import InputForm from "./input-form.component";
-import { Contact } from "./model";
 
 export interface Props {
   name: string;

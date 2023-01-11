@@ -1,6 +1,5 @@
 import "./input-form.styles.css";
 import { Props } from "./control-panel.component";
-import { useRef } from "react";
 
 const InputForm = ({
   name,
