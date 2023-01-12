@@ -3,6 +3,8 @@ import { Props } from "./control-panel.component";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAppDispatch } from "../hook";
+import { addContact } from "../store/contactSlice";
 
 type FormValues = {
   name: string;
@@ -36,15 +38,20 @@ const InputForm = ({
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>({ resolver: yupResolver(schema) });
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const onSubmit = handleSubmit((data) => dispatch(addContact(data)));
+
+  const dispatch = useAppDispatch();
+
   return (
     <form
       className="form"
       // onSubmit={(e) => onSubmit(e)}
       //? old version with event parament
       onSubmit={(e) => {
-        handleAddition(e);
+        // handleAddition(e);
+        e.preventDefault();
         onSubmit();
+
       }}
     >
       <input

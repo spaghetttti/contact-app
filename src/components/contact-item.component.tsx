@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Contact } from "./model";
 import "./contact-item.styles.css";
 
+import { useAppDispatch } from "../hook";
+import { removeContact } from "../store/contactSlice";
+
 type Props = {
   contact: Contact;
   contacts: Contact[];
@@ -30,6 +33,9 @@ const ContactItem = ({ contact, contacts, setContacts }: Props) => {
     );
     setEdit(false);
   };
+
+  //!
+  const dispatch = useAppDispatch(); 
 
   return (
     <form className="contact-item">
@@ -66,7 +72,9 @@ const ContactItem = ({ contact, contacts, setContacts }: Props) => {
       >
         {edit ? "SAVE" : "EDIT"}
       </div>
-      <div className="delete icon" onClick={() => handleDelete(contact.id)}>
+      {/*//? old version without dispatch <div className="delete icon" onClick={() => handleDelete(contact.id)}> */}
+      <div className="delete icon" onClick={() => dispatch(removeContact(contact.id))}>
+
         DELETE
       </div>
     </form>
