@@ -1,40 +1,47 @@
 import "./input-form.styles.css";
 import { Props } from "./control-panel.component";
-import { useForm, Resolver} from 'react-hook-form';
-
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 type FormValues = {
-  name: string,
-  phoneNumber: number | string
-}
+  name: string;
+  phoneNumber: number | string;
+};
 
-const resolver: Resolver<FormValues> = async (values) => {
-  return {
-    values: values.name ? values : {},
-    errors: !values.name ? {
-      name: {
-        type: 'required',
-        message: 'Name is required.',
-      },
-    }
-  : {},
-  }
-}
+// const resolver: Resolver<FormValues> = async (values) => {
+//   return {
+//     values: values.name ? values : {},
+//     errors: !values.name ? {
+//       name: {
+//         type: 'required',
+//         message: 'Name is required.',
+//       },
+//     }
+//   : !values.phoneNumber ? {phoneNumber: {type: 'required', message: "Phone number is required"}} :{},
+//   }
+// }
+
+const schema = yup.object().shape({ name: yup.string().required() }).required();
 
 const InputForm = ({
-  name, 
+  name,
   phoneNumber,
   setName,
   setPhoneNumber,
   handleAddition,
 }: Props) => {
-  const { register, handleSubmit, formState: {errors}} = useForm<FormValues>({resolver});
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({ resolver: yupResolver(schema) });
   const onSubmit = handleSubmit((data) => console.log(data));
   return (
     <form
       className="form"
       // onSubmit={(e) => onSubmit(e)}
-      //? old version with event parament 
+      //? old version with event parament
       onSubmit={(e) => {
         handleAddition(e);
         onSubmit();
@@ -48,9 +55,7 @@ const InputForm = ({
         {...register("name")}
         onChange={(e) => setName(e.target.value)}
       />
-      <p>
-      {errors.name?.message}
-      </p>
+      <p>{errors.name?.message}</p>
       <input
         type="input"
         placeholder="Enter a new contacts phone number"
@@ -59,9 +64,7 @@ const InputForm = ({
         {...register("phoneNumber")}
         onChange={(e) => setPhoneNumber(e.target.value)}
       />
-      <p>
-      {errors.phoneNumber?.message}
-      </p>
+      <p>{errors.phoneNumber?.message}</p>
       <button className="create-contact" type="submit">
         Create
       </button>
