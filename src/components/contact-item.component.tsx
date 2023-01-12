@@ -20,9 +20,10 @@ const ContactItem = ({ contact, contacts, setContacts }: Props) => {
   };
 
   const handleEdit = (e: React.FormEvent, id: number) => {
+    e.preventDefault();
     setContacts(
-      contacts.map((e) =>
-        e.id === id
+      contacts.map((contact) =>
+        contact.id === id
           ? { ...contact, name: editName, phoneNumber: editPhoneNumber }
           : contact
       )
