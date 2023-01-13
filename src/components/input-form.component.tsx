@@ -1,5 +1,5 @@
 import "./input-form.styles.css";
-import { Props } from "./control-panel.component";
+// import { Props } from "./control-panel.component";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -26,13 +26,7 @@ type FormValues = {
 
 const schema = yup.object().shape({ name: yup.string().required() }).required();
 
-const InputForm = ({
-  name,
-  phoneNumber,
-  setName,
-  setPhoneNumber,
-  handleAddition,
-}: Props) => {
+const InputForm = () => {
   const {
     register,
     handleSubmit,
@@ -51,25 +45,24 @@ const InputForm = ({
         // handleAddition(e);
         e.preventDefault();
         onSubmit();
-
       }}
     >
       <input
         type="input"
         placeholder="Enter a new contacts name"
         className="input"
-        value={name}
+        // value={name}
         {...register("name")}
-        onChange={(e) => setName(e.target.value)}
+        // onChange={(e) => setName(e.target.value)}
       />
       <p>{errors.name?.message}</p>
       <input
         type="input"
         placeholder="Enter a new contacts phone number"
         className="input"
-        value={phoneNumber}
+        // value={phoneNumber}
         {...register("phoneNumber")}
-        onChange={(e) => setPhoneNumber(e.target.value)}
+        // onChange={(e) => setPhoneNumber(e.target.value)}
       />
       <p>{errors.phoneNumber?.message}</p>
       <button className="create-contact" type="submit">

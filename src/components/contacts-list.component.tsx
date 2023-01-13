@@ -5,12 +5,12 @@ import ContactItem from "./contact-item.component";
 
 import { useAppSelector } from "../hook";
 
-interface Props {
-  contacts: Contact[];
-  setContacts: React.Dispatch<React.SetStateAction<Contact[]>>;
-}
+// interface Props {
+//   contacts: Contact[];
+//   setContacts: React.Dispatch<React.SetStateAction<Contact[]>>;
+// }
 
-const ContactsList = ({ contacts, setContacts }: Props) => {
+const ContactsList = () => {
   const ReduxContacts = useAppSelector(state => state.contacts.contacts)
   return (
     <div className="contacts">
@@ -18,8 +18,8 @@ const ContactsList = ({ contacts, setContacts }: Props) => {
         <ContactItem
           contact={e}
           key={e.id}
-          contacts={contacts}
-          setContacts={setContacts}
+          // contacts={contacts}
+          // setContacts={setContacts}
         />
       ))}
     </div>
