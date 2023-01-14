@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Contact } from "./model";
 import "./contact-item.styles.css";
 import { useAppDispatch } from "../hook";
@@ -9,9 +9,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { editContact } from "../store/contactSlice";
 
 type FormValues = {
-  id: number,
+  id: number;
   name: string;
-  phoneNumber: number | string;
+  phoneNumber: number;
+  email: string;
+  tag: string;
 };
 
 const schema = yup.object().shape({ name: yup.string().required() }).required();
@@ -19,41 +21,32 @@ const schema = yup.object().shape({ name: yup.string().required() }).required();
 
 type Props = {
   contact: Contact;
-  // contacts: Contact[];
-  // setContacts: React.Dispatch<React.SetStateAction<Contact[]>>;
 };
 
 const ContactItem = ({ contact }: Props) => {
   const [edit, setEdit] = useState<boolean>(false);
-  const [editName, setEditName] = useState<string>(contact.name);
-  const [editPhoneNumber, setEditPhoneNumber] = useState<number | string>(
-    contact.phoneNumber
-  );
+  const preLoadFormValues = {
+    id: contact.id,
+    name: contact.name,
+    phoneNumber: contact.phoneNumber,
+    email: contact.email,
+    tag: contact.tag,
+  };
+
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
-  } = useForm<FormValues>({ resolver: yupResolver(schema) });
-  const onSubmit  = handleSubmit((data) => dispatch(editContact({...contact, ...data})));////dispatch(editContact(data))
-  ;
+  } = useForm<FormValues>({
+    defaultValues: preLoadFormValues,
+    resolver: yupResolver(schema),
+  });
+  const onSubmit = handleSubmit((data) =>
+    dispatch(editContact({ ...contact, ...data }))
+  );
 
-  // const handleDelete = (id: number) => {
-  //   setContacts(contacts.filter((contact) => contact.id !== id));
-  // };
-
-  // const handleEdit = (e: React.FormEvent, id: number) => {
-  //   e.preventDefault();
-  //   setContacts(
-  //     contacts.map((contact) =>
-  //       contact.id === id
-  //         ? { ...contact, name: editName, phoneNumber: editPhoneNumber }
-  //         : contact
-  //     )
-  //   );
-  //   setEdit(false);
-  // };
-
-  //!
+  console.log(watch(["name", "phoneNumber", "email", "tag"]));
   const dispatch = useAppDispatch();
 
   return (
@@ -61,33 +54,38 @@ const ContactItem = ({ contact }: Props) => {
       {edit ? (
         <>
           <input
-            // value={editName}
+            type="text"
             className="contact-item-line"
-            // onChange={(e) => {
-            //   setEditName(e.target.value);
-            // }}
             {...register("name")}
           />
           <input
-            // value={editPhoneNumber}
+            type="tel"
             className="contact-item-line"
-            // onChange={(e) => {
-            //   setEditPhoneNumber(e.target.value);
-            // }}
             {...register("phoneNumber")}
+          />
+          <input
+            type="email"
+            className="contact-item-line"
+            {...register("email")}
+          />
+          <input
+            type="text"
+            className="contact-item-line"
+            {...register("tag")}
           />
         </>
       ) : (
         <>
           <span className="contact-item-line">{contact.name}</span>
           <span className="contact-item-line">{contact.phoneNumber}</span>
+          <span className="contact-item-line">{contact.email}</span>
+          <span className="contact-item-line">{contact.tag}</span>
         </>
       )}
 
       <div
         className="edit icon"
         onClick={(e) => {
-          // handleEdit(e, contact.id);
           if (edit) {
             onSubmit();
           }

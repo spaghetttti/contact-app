@@ -1,23 +1,9 @@
 import InputForm from "./input-form.component";
 
-// export interface Props {
-//   name: string;
-//   setName: React.Dispatch<React.SetStateAction<string>>;
-//   phoneNumber: number | string;
-//   setPhoneNumber: React.Dispatch<React.SetStateAction<string | number>>;
-//   handleAddition: (e: React.FormEvent) => void;
-// }
-
 const ControlPanel = () => {
   return (
     <>
-      <InputForm
-        // name={name}
-        // setName={setName}
-        // phoneNumber={phoneNumber}
-        // setPhoneNumber={setPhoneNumber}
-        // handleAddition={handleAddition}
-      />
+      <InputForm/>
       <p>search, filter</p>
     </>
   );

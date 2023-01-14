@@ -1,5 +1,4 @@
 import "./input-form.styles.css";
-// import { Props } from "./control-panel.component";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,22 +6,12 @@ import { useAppDispatch } from "../hook";
 import { addContact } from "../store/contactSlice";
 
 type FormValues = {
-  name: string;
-  phoneNumber: number | string;
+  name: string,
+  phoneNumber: number,
+  email: string,
+  tag: string
 };
 
-// const resolver: Resolver<FormValues> = async (values) => {
-//   return {
-//     values: values.name ? values : {},
-//     errors: !values.name ? {
-//       name: {
-//         type: 'required',
-//         message: 'Name is required.',
-//       },
-//     }
-//   : !values.phoneNumber ? {phoneNumber: {type: 'required', message: "Phone number is required"}} :{},
-//   }
-// }
 
 const schema = yup.object().shape({ name: yup.string().required() }).required();
 
@@ -30,39 +19,45 @@ const InputForm = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormValues>({ resolver: yupResolver(schema) });
-  const onSubmit = handleSubmit((data) => dispatch(addContact(data)));
+  const onSubmit = handleSubmit((data) => {dispatch(addContact(data)); reset() });
 
   const dispatch = useAppDispatch();
 
   return (
     <form
       className="form"
-      // onSubmit={(e) => onSubmit(e)}
-      //? old version with event parament
       onSubmit={(e) => {
-        // handleAddition(e);
         e.preventDefault();
         onSubmit();
       }}
     >
       <input
-        type="input"
+        type="text"
         placeholder="Enter a new contacts name"
         className="input"
-        // value={name}
         {...register("name")}
-        // onChange={(e) => setName(e.target.value)}
       />
       <p>{errors.name?.message}</p>
       <input
-        type="input"
+        type="tel"
         placeholder="Enter a new contacts phone number"
         className="input"
-        // value={phoneNumber}
         {...register("phoneNumber")}
-        // onChange={(e) => setPhoneNumber(e.target.value)}
+      /> 
+      <input
+        type="email"
+        placeholder="Enter a new contacts email"
+        className="input"
+        {...register("email")}
+      />
+      <input
+        type="text"
+        placeholder="Enter a new contacts tag"
+        className="input"
+        {...register("tag")}
       />
       <p>{errors.phoneNumber?.message}</p>
       <button className="create-contact" type="submit">
