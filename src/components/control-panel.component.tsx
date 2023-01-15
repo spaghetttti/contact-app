@@ -1,10 +1,15 @@
 import InputForm from "./input-form.component";
+import SearchInput from "./search-input.component";
 
-const ControlPanel = () => {
+export type Props = {
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>,
+}
+
+const ControlPanel = ({setSearchValue}: Props) => {
   return (
     <>
       <InputForm/>
-      <p>search, filter</p>
+      <SearchInput setSearchValue={setSearchValue}/>
     </>
   );
 };

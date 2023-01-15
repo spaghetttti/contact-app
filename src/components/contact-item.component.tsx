@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Contact } from "./model";
-import "./contact-item.styles.css";
+// import "./contact-item.styles.css";
 import { useAppDispatch } from "../hook";
 import { removeContact } from "../store/contactSlice";
 import { useForm } from "react-hook-form";
@@ -50,28 +50,29 @@ const ContactItem = ({ contact }: Props) => {
   const dispatch = useAppDispatch();
 
   return (
-    <form className="contact-item">
+    <div className=" min-w-full ">
+    <form className="flex gap-5 justify-around flex-wrap bg-white shadow-md  rounded pt-6 pb-8 mb-4 p-6">
       {edit ? (
         <>
           <input
             type="text"
-            className="contact-item-line"
+            className="inline  flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             {...register("name")}
           />
           <span>{errors.name?.message}</span>
           <input
             type="tel"
-            className="contact-item-line"
+            className="inline  flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             {...register("phoneNumber")}
           />
           <input
             type="email"
-            className="contact-item-line"
+            className="inline  flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             {...register("email")}
           />
           <input
             type="text"
-            className="contact-item-line"
+            className="block flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             {...register("tag")}
           />
         </>
@@ -85,7 +86,7 @@ const ContactItem = ({ contact }: Props) => {
       )}
 
       <div
-        className="edit icon"
+        className="inline-flex items-center rounded border border-0-r px-6 ml-4 text-bold bg-blue-500 hover:bg-blue-700 text-white font-bold  rounded"
         onClick={(e) => {
           if (edit) {
             onSubmit();
@@ -95,14 +96,14 @@ const ContactItem = ({ contact }: Props) => {
       >
         {edit ? "SAVE" : "EDIT"}
       </div>
-      {/*//? old version without dispatch <div className="delete icon" onClick={() => handleDelete(contact.id)}> */}
       <div
-        className="delete icon"
+        className="inline-flex items-center rounded border border-0-r px-6 ml-4 text-bold bg-blue-500 hover:bg-blue-700 text-white font-bold  rounded"
         onClick={() => dispatch(removeContact(contact.id))}
       >
         DELETE
       </div>
     </form>
+    </div>
   );
 };
 
