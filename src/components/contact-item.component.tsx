@@ -9,7 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { editContact } from "../store/contactSlice";
 
 type FormValues = {
-  id: number;
+  id: number | string;
   name: string;
   phoneNumber: number;
   email: string;
@@ -58,6 +58,7 @@ const ContactItem = ({ contact }: Props) => {
             className="contact-item-line"
             {...register("name")}
           />
+          <span>{errors.name?.message}</span>
           <input
             type="tel"
             className="contact-item-line"
