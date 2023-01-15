@@ -1,23 +1,37 @@
-import React from "react";
-import { Contact } from "./model";
 import "./contacts-list.styles.css";
 import ContactItem from "./contact-item.component";
+import { useAppSelector } from "../hook";
+import { Contact } from "./model";
 
-interface Props {
-  contacts: Contact[];
-  setContacts: React.Dispatch<React.SetStateAction<Contact[]>>;
-}
+type Props = {
+  searchValue: string;
+};
 
-const ContactsList = ({ contacts, setContacts }: Props) => {
+const ContactsList = ({ searchValue }: Props) => {
+  let ReduxContacts: Contact[];
+  ReduxContacts = useAppSelector((state) => state.contacts.contacts);
+  if (searchValue) {
+    ReduxContacts = ReduxContacts.filter(
+      (e) =>
+        e.name.toString().toLowerCase().includes(searchValue.toLowerCase()) ||
+        e.phoneNumber
+          .toString()
+          .toLowerCase()
+          .includes(searchValue.toLowerCase()) ||
+          e.email
+          .toString()
+          .toLowerCase()
+          .includes(searchValue.toLowerCase()) ||
+          e.tag
+          .toString()
+          .toLowerCase()
+          .includes(searchValue.toLowerCase())
+    );
+  }
   return (
     <div className="contacts">
-      {contacts.map((e) => (
-        <ContactItem
-          contact={e}
-          key={e.id}
-          contacts={contacts}
-          setContacts={setContacts}
-        />
+      {ReduxContacts.map((e) => (
+        <ContactItem contact={e} key={e.id} />
       ))}
     </div>
   );

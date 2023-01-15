@@ -1,74 +1,109 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Contact } from "./model";
-import "./contact-item.styles.css";
+// import "./contact-item.styles.css";
+import { useAppDispatch } from "../hook";
+import { removeContact } from "../store/contactSlice";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { editContact } from "../store/contactSlice";
+
+type FormValues = {
+  id: number | string;
+  name: string;
+  phoneNumber: number;
+  email: string;
+  tag: string;
+};
+
+const schema = yup.object().shape({ name: yup.string().required() }).required();
+//may export all this shit later from input-from.component to make ti DRY
 
 type Props = {
   contact: Contact;
-  contacts: Contact[];
-  setContacts: React.Dispatch<React.SetStateAction<Contact[]>>;
 };
 
-const ContactItem = ({ contact, contacts, setContacts }: Props) => {
+const ContactItem = ({ contact }: Props) => {
   const [edit, setEdit] = useState<boolean>(false);
-  const [editName, setEditName] = useState<string>(contact.name);
-  const [editPhoneNumber, setEditPhoneNumber] = useState<number | string>(
-    contact.phoneNumber
+  const preLoadFormValues = {
+    id: contact.id,
+    name: contact.name,
+    phoneNumber: contact.phoneNumber,
+    email: contact.email,
+    tag: contact.tag,
+  };
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<FormValues>({
+    defaultValues: preLoadFormValues,
+    resolver: yupResolver(schema),
+  });
+  const onSubmit = handleSubmit((data) =>
+    dispatch(editContact({ ...contact, ...data }))
   );
 
-  const handleDelete = (id: number) => {
-    setContacts(contacts.filter((contact) => contact.id !== id));
-  };
-
-  const handleEdit = (e: React.FormEvent, id: number) => {
-    setContacts(
-      contacts.map((e) =>
-        e.id === id
-          ? { ...contact, name: editName, phoneNumber: editPhoneNumber }
-          : contact
-      )
-    );
-    setEdit(false);
-  };
+  console.log(watch(["name", "phoneNumber", "email", "tag"]));
+  const dispatch = useAppDispatch();
 
   return (
-    <form className="contact-item">
+    <div className=" min-w-full ">
+    <form className="flex gap-5 justify-around flex-wrap bg-white shadow-md  rounded pt-6 pb-8 mb-4 p-6">
       {edit ? (
         <>
           <input
-            value={editName}
-            className="contact-item-line"
-            onChange={(e) => {
-              setEditName(e.target.value); 
-            }}
+            type="text"
+            className="inline  flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            {...register("name")}
+          />
+          <span>{errors.name?.message}</span>
+          <input
+            type="tel"
+            className="inline  flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            {...register("phoneNumber")}
           />
           <input
-            value={editPhoneNumber}
-            className="contact-item-line"
-            onChange={(e) => {
-              setEditPhoneNumber(e.target.value);
-            }}
+            type="email"
+            className="inline  flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            {...register("email")}
+          />
+          <input
+            type="text"
+            className="block flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            {...register("tag")}
           />
         </>
       ) : (
         <>
           <span className="contact-item-line">{contact.name}</span>
           <span className="contact-item-line">{contact.phoneNumber}</span>
+          <span className="contact-item-line">{contact.email}</span>
+          <span className="contact-item-line">{contact.tag}</span>
         </>
       )}
 
       <div
-        className="edit icon"
+        className="inline-flex items-center rounded border border-0-r px-6 ml-4 text-bold bg-blue-500 hover:bg-blue-700 text-white font-bold  rounded"
         onClick={(e) => {
-          handleEdit(e, contact.id);
+          if (edit) {
+            onSubmit();
+          }
           setEdit(!edit);
         }}
       >
         {edit ? "SAVE" : "EDIT"}
       </div>
-      <div className="delete icon" onClick={() => handleDelete(contact.id)}>
+      <div
+        className="inline-flex items-center rounded border border-0-r px-6 ml-4 text-bold bg-blue-500 hover:bg-blue-700 text-white font-bold  rounded"
+        onClick={() => dispatch(removeContact(contact.id))}
+      >
         DELETE
       </div>
     </form>
+    </div>
   );
 };
 

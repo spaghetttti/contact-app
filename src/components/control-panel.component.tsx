@@ -1,30 +1,15 @@
 import InputForm from "./input-form.component";
+import SearchInput from "./search-input.component";
 
-export interface Props {
-  name: string;
-  setName: React.Dispatch<React.SetStateAction<string>>;
-  phoneNumber: number | string;
-  setPhoneNumber: React.Dispatch<React.SetStateAction<string | number>>;
-  handleAddition: (e: React.FormEvent) => void;
+export type Props = {
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>,
 }
 
-const ControlPanel = ({
-  name,
-  setName,
-  phoneNumber,
-  setPhoneNumber,
-  handleAddition,
-}: Props) => {
+const ControlPanel = ({setSearchValue}: Props) => {
   return (
     <>
-      <InputForm
-        name={name}
-        setName={setName}
-        phoneNumber={phoneNumber}
-        setPhoneNumber={setPhoneNumber}
-        handleAddition={handleAddition}
-      />
-      <p>search, filter</p>
+      <InputForm/>
+      <SearchInput setSearchValue={setSearchValue}/>
     </>
   );
 };
