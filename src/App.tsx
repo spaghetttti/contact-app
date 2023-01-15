@@ -1,7 +1,6 @@
 import "./App.css";
 import ContactsList from "./components/contacts-list.component";
 import ControlPanel from "./components/control-panel.component";
-import { db } from "./firebase-config";
 import { useState } from "react";
 
 const App: React.FC = () => {
