@@ -29,7 +29,7 @@ const ContactsList = ({ searchValue }: Props) => {
     );
   }
   return (
-    <div className="contacts">
+    <div className='flex flex-col justify-evenly items-center w-9/10'>
       {ReduxContacts.map((e) => (
         <ContactItem contact={e} key={e.id} />
       ))}
