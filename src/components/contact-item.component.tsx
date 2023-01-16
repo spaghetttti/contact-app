@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Contact } from "./model";
-// import "./contact-item.styles.css";
 import { useAppDispatch } from "../hook";
 import { removeContact } from "../store/contactSlice";
 import { useForm } from "react-hook-form";
