@@ -8,7 +8,7 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <span className="header">Contacts</span>
+      <h1 className="header">Contacts</h1>
       <ControlPanel setSearchValue={setSearchValue}/>
       <ContactsList searchValue={searchValue}/>
     </div>
